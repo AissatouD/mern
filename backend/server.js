@@ -13,6 +13,7 @@ import responseTime from 'response-time';
 import favicon from 'serve-favicon';
 import indexRouter from './routes/index';
 import playerRouter from './routes/player';
+import userRouter from './routes/user';
 const app = express();
 
 // secure the server by setting various HTTP headers
@@ -72,6 +73,7 @@ mongoose
 // routes
 app.use('/', indexRouter);
 app.use('/player', playerRouter);
+app.use('/user', userRouter);
 
 // setup ip address and port number
 app.set('port', process.env.PORT || 3003);
