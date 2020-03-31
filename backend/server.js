@@ -12,6 +12,7 @@ import emoji from 'node-emoji';
 import responseTime from 'response-time';
 import favicon from 'serve-favicon';
 import indexRouter from './routes/index';
+import messageRouter from './routes/message';
 import playerRouter from './routes/player';
 import userRouter from './routes/user';
 const app = express();
@@ -58,10 +59,11 @@ app.use(
 // connexion db
 
 dotenv.config();
-
+console.log(    `mongodb://${process.env.DB_USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
+);
 mongoose
   .connect(
-    `mongodb://${process.env.USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
+    `mongodb://${process.env.DB_USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
     {
       useNewUrlParser: true,
       useUnifiedTopology: true
@@ -74,6 +76,8 @@ mongoose
 app.use('/', indexRouter);
 app.use('/player', playerRouter);
 app.use('/user', userRouter);
+app.use('/message', messageRouter);
+
 
 // setup ip address and port number
 app.set('port', process.env.PORT || 3003);
