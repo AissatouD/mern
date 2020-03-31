@@ -22,8 +22,7 @@ export const ensureIsAuthenticated = (req, res, next) => {
 
   // 2-2 Check if auth bearer is not expired
   if (payload.exp <= moment().unix()) {
-      return res.status(401).send('Token expired ');
-    }
+    return res.status(401).send('Token expired ');
   }
 
   payload = {
@@ -36,6 +35,6 @@ export const ensureIsAuthenticated = (req, res, next) => {
       return res.status(401).send('Person not found');
     }
     req.userId = personId;
-    next()
+    next();
   });
 };
