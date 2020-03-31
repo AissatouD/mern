@@ -25,13 +25,15 @@ var personSchema = new Schema({
 
 });
 
-personSchema.pre('save', function(next){
-  let person = this;
-
-  bcrypt.genSalt(143, function(err, salt){
-    bcrypt.hash(person.password, salt, function(err, hash){
-      person.password= hash;
-      next;
+personSchema.pre('save', function (next) {
+  var person = this;
+  if (!person.isModified('password')) {
+    return next();
+  }
+  bcrypt.genSalt(10, function (err, salt) {
+    bcrypt.hash(person.password, salt, function (err, hash) {
+      person.password = hash;
+      next();
     });
   });
 });

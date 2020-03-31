@@ -13,8 +13,10 @@ import responseTime from 'response-time';
 import favicon from 'serve-favicon';
 import indexRouter from './routes/index';
 import messageRouter from './routes/message';
+import personRouter from './routes/person';
 import playerRouter from './routes/player';
 import userRouter from './routes/user';
+
 const app = express();
 
 // secure the server by setting various HTTP headers
@@ -61,6 +63,7 @@ app.use(
 dotenv.config();
 console.log(    `mongodb://${process.env.DB_USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
 );
+
 mongoose
   .connect(
     `mongodb://${process.env.DB_USER}:${process.env.PASSWORD}@${process.env.HOST}:${process.env.MONGO_PORT}/${process.env.DATABASE}`,
@@ -77,6 +80,7 @@ app.use('/', indexRouter);
 app.use('/player', playerRouter);
 app.use('/user', userRouter);
 app.use('/message', messageRouter);
+app.use('/person', personRouter);
 
 
 // setup ip address and port number
