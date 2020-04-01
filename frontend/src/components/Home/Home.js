@@ -1,13 +1,20 @@
+/* eslint-disable indent */
 import React, { useEffect, useState } from 'react';
-import sampleFishes from '../../sample-fishes';
 import Fish from '../Fish/Fish';
 import './Home.scss';
 
 const Home = () => {
   const [fishes, setFishes] = useState({});
 
+
+
   useEffect(() => {
-    setFishes(sampleFishes);
+    fetch('http://localhost:3003/fish')
+      .then(response => response.json())
+      .then(responseData => {
+        setFishes(responseData);
+      })
+      .catch(error => console.warn(error));
   }, [fishes]);
 
   return (

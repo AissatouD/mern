@@ -47,6 +47,29 @@ const SignUp = () => {
         }}
         validationSchema={validationRules}
         onSubmit={(values, { setSubmitting }) => {
+          const val = {
+            'firstName': values.firstName,
+            'lastName': values.lastName,
+            'email': values.email,
+            'password': values.password,
+          };
+          let formBody = [];
+          for (let v in val) {
+            var encodedKey = encodeURIComponent(v);
+            var encodedValue = encodeURIComponent(val[v]);
+            formBody.push(encodedKey + '=' + encodedValue);
+          }
+          formBody = formBody.join('&');
+          console.log(formBody);
+
+          fetch('http://localhost:3003/person/signup', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8'
+            },
+            body: formBody
+          });
+
           setSubmitting(true);
           setTimeout(() => {
             setSubmitting(false);
@@ -60,7 +83,7 @@ const SignUp = () => {
             });
           }, 3000);
         }}>
-        {({ values, errors, touched, handleChange, handleBlur, handleSubmit, isSubmitting }) => (
+        {({ values, errors, touched, handleChange, handleBlur,handleSubmit, isSubmitting }) => (
           <Container component='main' maxWidth='sm'>
             <h1>Signup</h1>
             <div style={{ marginTop: 10 }}>

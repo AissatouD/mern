@@ -13,6 +13,15 @@ const EditFishForm = props => {
     }
   );
 
+  const deleteFish  = id => {
+
+    const headers = {
+      method: 'DELETE'};
+
+    fetch('http://localhost:3003/fish/delete/'+ id, headers);
+    console.log(id);
+  };
+
   const handleChange = name => event => {
     let newFish = { ...fish };
     newFish[name] = event.target.value;
@@ -30,7 +39,7 @@ const EditFishForm = props => {
       </select>
       <textarea name='desc' onChange={handleChange('desc')} value={fish.desc} />
       <input type='text' name='image' onChange={handleChange('image')} value={fish.image} />
-      <button onClick={() => props.deleteFish(props.index)}>Remove fish</button>
+      <button onClick={() => deleteFish(fish._id)}>Remove fish</button>
     </div>
   );
 };

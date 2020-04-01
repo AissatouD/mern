@@ -6,8 +6,8 @@ let fishRouter= express.Router();
 
 fishRouter.get('/', getAllFish);
 fishRouter.post('/add', addFish);
-fishRouter.put('/update', updateFish);
-fishRouter.delete('/delete', deleteFish);
+fishRouter.put('/update/:id', updateFish);
+fishRouter.delete('/delete/:id', deleteFish);
 
 export default fishRouter;
 

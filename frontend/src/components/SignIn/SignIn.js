@@ -5,7 +5,8 @@ import { makeStyles } from '@material-ui/core/styles';
 import TextField from '@material-ui/core/TextField';
 import SendIcon from '@material-ui/icons/Send';
 import { Formik } from 'formik';
-import React from 'react';
+import React, { useState } from 'react';
+import { Redirect } from 'react-router-dom';
 import { toast, ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import * as yup from 'yup';
@@ -24,6 +25,11 @@ const useStyles = makeStyles(theme => ({
 
 const SignIn = () => {
   const classes = useStyles();
+  const [isConnected, setIsConnected] = useState(false);
+
+  if (isConnected) {
+    return <Redirect to='/Inventory' />;
+  }
 
   return (
     <div>
@@ -35,6 +41,38 @@ const SignIn = () => {
         }}
         validationSchema={validationRules}
         onSubmit={(values, { setSubmitting }) => {
+          const val = {
+            'email': values.email,
+            'password': values.password,
+          };
+          let formBody = [];
+          for (let v in val) {
+            var encodedKey = encodeURIComponent(v);
+            var encodedValue = encodeURIComponent(val[v]);
+            formBody.push(encodedKey + '=' + encodedValue);
+          }
+          formBody = formBody.join('&');
+          console.log(formBody);
+
+          const headers = {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/x-www-form-urlencoded;charset=UTF-8',
+              body: formBody
+            },
+
+          };
+
+          fetch('http://localhost:3003/person/signin',headers)
+            .then(response => response.json())
+            .then(responseData => {
+              if (responseData) {
+                localStorage.setItem('token', responseData.token);
+                setIsConnected(true);
+              }
+
+            });
+
           setSubmitting(true);
           setTimeout(() => {
             setSubmitting(false);
